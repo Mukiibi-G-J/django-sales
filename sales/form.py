@@ -5,7 +5,7 @@ class SalesSearchForm(forms.Form):
     CHART_CHOICES =(
         ('#1', 'Bar Chart'),
         ('#2', 'Pie Chart'),
-        ('#1', 'Line Chart')
+        ('#3', 'Line Chart')
         
     )
     date_from=forms.DateField(widget=forms.DateInput(attrs={

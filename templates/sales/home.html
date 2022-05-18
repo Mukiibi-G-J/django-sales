@@ -19,7 +19,12 @@
 {{merge_df|safe}}
 <br />
 <h1>df</h1>
-{{df|safe}} {% else %}
+{{df|safe}} 
+
+<h1>chart</h1>
+<img src="data:image/png;base64, {{ chart|safe }}">
+{{df|safe}}
+{% else %}
 
 <h1>No datat</h1>
 {% endif%} {% endblock content %}

@@ -1,5 +1,6 @@
  
 
+from cProfile import label
 from django.shortcuts import render
 from django.views.generic import DetailView,ListView
 # Create your views here.
@@ -7,7 +8,7 @@ from django.shortcuts import render
 from .models import Sale
 from .form import SalesSearchForm
 import pandas as pd
-from .utils import get_salesman_from_id, get_customer_from_id
+from .utils import get_salesman_from_id,get_chart, get_customer_from_id
 
 
 def home_view(request):
@@ -16,6 +17,7 @@ def home_view(request):
     postions_df=None
     merge_df=None
     df=None
+    chart = None
     if request.method == 'POST':
         date_from = request.POST.get('date_from')
         date_to= request.POST.get('date_to')
@@ -50,15 +52,18 @@ def home_view(request):
             sales_df = sales_df.to_html()
             
             df = merge_df.groupby('transaction_id', as_index=False )['price'].agg('sum')
+            chart = get_chart(chart_type, df, labels=df['transaction_id'].values)
             df = df.to_html()
+             
             merge_df = merge_df.to_html()
-            print(postions_df)
+            # print(postions_df)
     context ={
         "form":form,
         "sales_df":sales_df,
         "postions_df":postions_df,
         "merge_df":merge_df,
-        "df":df
+        "df":df,
+        'chart':chart
         
     }        
         # # ?lsit of dictionaries
