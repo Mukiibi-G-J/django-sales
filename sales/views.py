@@ -1,5 +1,5 @@
  
-from heapq import merge
+
 from django.shortcuts import render
 from django.views.generic import DetailView,ListView
 # Create your views here.
@@ -15,6 +15,7 @@ def home_view(request):
     sales_df=None
     postions_df=None
     merge_df=None
+    df=None
     if request.method == 'POST':
         date_from = request.POST.get('date_from')
         date_to= request.POST.get('date_to')
@@ -48,14 +49,16 @@ def home_view(request):
             postions_df = postions_df.to_html()
             sales_df = sales_df.to_html()
             
-           
+            df = merge_df.groupby('transaction_id', as_index=False )['price'].agg('sum')
+            df = df.to_html()
             merge_df = merge_df.to_html()
             print(postions_df)
     context ={
         "form":form,
         "sales_df":sales_df,
         "postions_df":postions_df,
-        "merge_df":merge_df
+        "merge_df":merge_df,
+        "df":df
         
     }        
         # # ?lsit of dictionaries
